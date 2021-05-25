@@ -1,4 +1,4 @@
-import numpy
+from scipy.stats import multivariate_normal
 from numpy.random import default_rng
 import matplotlib.pyplot as plt
 
@@ -15,14 +15,19 @@ m02 = [0, 3]
 c02 = [[1, 0], [0, 2]]
 m = [2, 2]
 c = [[1, 0], [0, 1]]
+classes = 2
 
 # rng
 rng = default_rng()
+pfd1 = multivariate_normal(mean=m, cov=c) #1 label
+pdf01 = multivariate_normal(mean=m01, cov=c01) #0 label < 50
+pdf00 = multivariate_normal(mean=m02, cov=c02) #0 label > 50
 
 # define datasets for labels
 l0Dataset = []
 l1Dataset = []
 
+#generate dataset
 for i in range(DATASIZE):
     test = rng.uniform()
     if test < l0:
@@ -35,6 +40,10 @@ for i in range(DATASIZE):
         l1Dataset.append(rng.multivariate_normal(m, c))
 
 fulldataset = l0Dataset + l1Dataset
+
+#ERM classification
+test = pdf01.pdf([3,3])
+print(test)
 
 
 print(l0Dataset)
