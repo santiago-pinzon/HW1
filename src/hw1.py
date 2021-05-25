@@ -41,7 +41,7 @@ for i in range(DATASIZE):
 
 fulldataset = l0Dataset + l1Dataset
 
-# ERM classification
+# Calculate Scores
 scoresL0 = []
 scoresL1 = []
 for tup in l0Dataset:
@@ -57,7 +57,7 @@ for tup in l1Dataset:
 
 ROCVals = []
 
-
+# Vary lambda and create ROC Curve
 for lambda1 in range(2000):
 	tau = lambda1/100
 	print("loop " + str(lambda1) + "/1000")
@@ -80,17 +80,15 @@ for lambda1 in range(2000):
 
 	ROCVals.append([fp/(fp + tn), tp/(tp + fn)])
 
+
+# plot our things
 print(ROCVals)
 
 plt.plot(*zip(*ROCVals))
 
-# plot our things
 f, (ax1, ax2) = plt.subplots(1, 2, sharey=True)
 ax1.plot(*zip(*l0Dataset), 'bo')
 ax1.plot(*zip(*l1Dataset), 'ro')
-
-# ax2.plot(*zip(*classified0), 'bo')
-# ax2.plot(*zip(*classified1), 'ro')
 
 plt.show()
 
