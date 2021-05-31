@@ -60,14 +60,29 @@ def classify(data, labels, hatred):
     print('3\t' + str(cmat[2]))
     print('pError: ' + str(perror))
 
+    lamda = [[0,1,hatred], [1,0, hatred], [1,1,0]]
+    probs = [[l1,l2,l3], [l1,l2, l3], [l1, l2, l3]]
+    minerror = (np.array(lamda) * np.array(probs))
+    minerror = (minerror * np.array(cmat))
+    print('Expected risk: ' + str(np.sum(minerror)))
+
     fig = plt.figure()
-    ax2 = plt.axes(projection='3d')
-    ax2.scatter3D(*zip(*l1correct), c='green', marker='x')
-    ax2.scatter3D(*zip(*l2correct), c='green', marker='.')
-    ax2.scatter3D(*zip(*l3correct), c='green', marker='*')
-    ax2.scatter3D(*zip(*l1wrong), c='red', marker='x')
-    ax2.scatter3D(*zip(*l2wrong), c='red', marker='.')
-    ax2.scatter3D(*zip(*l3wrong), c='red', marker='*')
+    ax1 = fig.add_subplot(1, 2, 1, projection='3d')
+    ax2 = fig.add_subplot(1, 2, 2, projection='3d')
+
+    col = ax1.scatter3D(*zip(*data), c=labels, cmap='viridis')
+    plt.colorbar(col, ax=ax1, location='left', shrink=0.5)
+    ax1.set_title('True Dataset')
+
+    ax2.scatter3D(*zip(*l1correct), c='green', marker='x', label='1 Correct')
+    ax2.scatter3D(*zip(*l2correct), c='green', marker='.', label='2 Correct')
+    ax2.scatter3D(*zip(*l3correct), c='green', marker='*', label='3 Correct')
+    ax2.scatter3D(*zip(*l1wrong), c='red', marker='x', label='1 Wrong')
+    ax2.scatter3D(*zip(*l2wrong), c='red', marker='.', label='2 Wrong')
+    ax2.scatter3D(*zip(*l3wrong), c='red', marker='*', label='3 Wrong')
+    ax2.legend()
+    ax2.set_title("Classified Dataset")
+
     plt.show()
 
 
